@@ -61,3 +61,26 @@ def http_methods_flag(*methods):
 
     methods = map(lambda m: m.lower(), methods)
     return "".join(map(lambda (m, f): m in methods and f or "-", flags))
+
+
+class CachedProperty(object):
+    """ A decorator that converts a function into a lazy property.
+    """
+    def __init__(self, func, name=None, doc=None):
+        self.__name__ = name or func.__name__
+        self.__module__ = func.__module__
+        self.__doc__ = doc or func.__doc__
+        self.func = func
+
+    def __get__(self, obj, owner):
+
+        if not obj:
+            return self
+        value = obj.__dict__.get(self.__name__, None)
+
+        if value is None:
+            value = self.func(obj)
+            obj.__dict__[self.__name__] = value
+
+        return value
+

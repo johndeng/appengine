@@ -19,7 +19,7 @@ def hello(environ, start_response):
 
 @url("/async")
 def async(environ, start_response):
-    sleep(0.2)
+    sleep(0.01)
     s = "Hello, World!\n"
 
     start_response("200 OK", [
@@ -40,3 +40,10 @@ def remote(environ, start_response):
     ])
 
     return s
+
+@url("/john")
+def john(request, response):
+
+    print request.url_args
+    s = "h"
+    response.set_data(s)
