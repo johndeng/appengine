@@ -10,7 +10,7 @@ from gevent.os import fork
 from gevent.threadpool import ThreadPool
 from gevent.event import Event
 
-from engine.config import HOST, PORT, WORKERS, CPUS, HTTPS, HTTPS_KEY, HTTPS_CERT
+from engine.config import WORKERS, CPUS, HTTPS, HTTPS_KEY, HTTPS_CERT
 from engine.signaler import Signaler
 from engine.interface import BaseEngine
 from engine.util import app_path
@@ -37,6 +37,9 @@ class Engine(BaseEngine, Signaler):
         Signaler.__init__(self)
 
     def run(self):
+
+        from engine.config import HOST, PORT
+
         self._listen_sock = socket(family=AF_INET)
         self._listen_sock.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
         self._listen_sock.bind((HOST, PORT))
